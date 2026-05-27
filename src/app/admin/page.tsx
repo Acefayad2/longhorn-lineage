@@ -1,12 +1,20 @@
 import { BadgeCheck, ShieldAlert } from "lucide-react";
 import { AppShell } from "@/components/app-shell";
+import { markVerified } from "@/lib/actions";
 import {
+  getLonghorn,
+  getRanch,
   longhorns,
   ranches,
   verificationRequests,
 } from "@/lib/sample-data";
 
-export default function AdminPage() {
+export default async function AdminPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ message?: string }>;
+}) {
+  const params = await searchParams;
   const pendingLonghorns = longhorns.filter(
     (longhorn) => longhorn.verification_status !== "verified",
   );
@@ -19,6 +27,11 @@ export default function AdminPage() {
           <h1 className="mt-2 text-3xl font-semibold tracking-tight">
             Admin verification dashboard
           </h1>
+          {params.message ? (
+            <p className="mt-4 border border-neutral-300 bg-white p-3 text-sm">
+              {params.message}
+            </p>
+          ) : null}
         </div>
       </section>
 
@@ -45,13 +58,56 @@ export default function AdminPage() {
                   </p>
                 </div>
                 <div className="flex gap-2">
-                  <button className="button-primary" type="button">
-                    Mark verified
-                  </button>
+                  <form action={markVerified}>
+                    <input
+                      type="hidden"
+                      name="request_id"
+                      value={request.id}
+                    />
+                    <input
+                      type="hidden"
+                      name="target_type"
+                      value={request.target_type}
+                    />
+                    <input
+                      type="hidden"
+                      name="target_id"
+                      value={
+                        request.target_type === "longhorn"
+                          ? (getLonghorn("lh-2")?.id ?? "")
+                          : (getRanch("cedar-creek-cattle-co")?.id ?? "")
+                      }
+                    />
+                    <button className="button-primary" type="submit">
+                      Mark verified
+                    </button>
+                  </form>
                   <button className="button-secondary" type="button">
                     Needs info
                   </button>
                 </div>
+              </div>
+            ))}
+            {pendingLonghorns.map((longhorn) => (
+              <div
+                key={longhorn.id}
+                className="grid gap-4 p-5 md:grid-cols-[1fr_auto]"
+              >
+                <div>
+                  <p className="label">longhorn</p>
+                  <h3 className="mt-1 font-semibold">{longhorn.name}</h3>
+                  <p className="mt-2 text-sm text-neutral-600">
+                    {longhorn.registration_number} is currently{" "}
+                    {longhorn.verification_status}.
+                  </p>
+                </div>
+                <form action={markVerified}>
+                  <input type="hidden" name="target_type" value="longhorn" />
+                  <input type="hidden" name="target_id" value={longhorn.id} />
+                  <button className="button-primary" type="submit">
+                    Mark verified
+                  </button>
+                </form>
               </div>
             ))}
           </div>

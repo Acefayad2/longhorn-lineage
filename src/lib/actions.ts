@@ -2,6 +2,7 @@
 
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
+import { createAdminClient } from "./supabase-admin";
 import { createClient } from "./supabase-server";
 
 export async function signIn(formData: FormData) {
@@ -90,4 +91,41 @@ export async function createLonghorn(formData: FormData) {
 
   revalidatePath("/longhorns");
   redirect(`/longhorns/${data.id}`);
+}
+
+export async function markVerified(formData: FormData) {
+  const targetType = String(formData.get("target_type") ?? "");
+  const targetId = String(formData.get("target_id") ?? "");
+  const requestId = String(formData.get("request_id") ?? "");
+  const supabase = createAdminClient();
+
+  if (!supabase) {
+    redirect("/admin?message=Add SUPABASE_SERVICE_ROLE_KEY to enable admin updates");
+  }
+
+  if (targetType === "longhorn") {
+    await supabase
+      .from("longhorns")
+      .update({ verification_status: "verified" })
+      .eq("id", targetId);
+  }
+
+  if (targetType === "ranch") {
+    await supabase.from("ranches").update({ verified: true }).eq("id", targetId);
+  }
+
+  if (requestId) {
+    await supabase
+      .from("verification_requests")
+      .update({
+        status: "verified",
+        reviewed_at: new Date().toISOString(),
+      })
+      .eq("id", requestId);
+  }
+
+  revalidatePath("/admin");
+  revalidatePath("/longhorns");
+  revalidatePath("/dashboard");
+  redirect("/admin?message=Record marked verified");
 }
