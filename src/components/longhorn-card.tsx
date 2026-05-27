@@ -1,7 +1,34 @@
 import Image from "next/image";
 import Link from "next/link";
-import { BadgeCheck, CircleDot } from "lucide-react";
+import { BadgeCheck, CircleDot, Clock3 } from "lucide-react";
 import type { Longhorn, Ranch } from "@/lib/types";
+
+function VerificationBadge({ status }: { status: Longhorn["verification_status"] }) {
+  if (status === "verified") {
+    return (
+      <span className="status status-dark">
+        <BadgeCheck size={14} />
+        Verified
+      </span>
+    );
+  }
+
+  if (status === "pending") {
+    return (
+      <span className="status border border-neutral-300 bg-white text-neutral-700">
+        <Clock3 size={14} />
+        Pending
+      </span>
+    );
+  }
+
+  return (
+    <span className="status status-muted">
+      <CircleDot size={14} />
+      Unverified
+    </span>
+  );
+}
 
 export function LonghornCard({
   longhorn,
@@ -11,7 +38,10 @@ export function LonghornCard({
   ranch?: Ranch;
 }) {
   return (
-    <Link href={`/longhorns/${longhorn.id}`} className="group card overflow-hidden">
+    <Link
+      href={`/longhorns/${longhorn.id}`}
+      className="group card overflow-hidden transition hover:-translate-y-0.5 hover:shadow-md"
+    >
       <div className="relative aspect-[4/3] bg-neutral-100">
         <Image
           src={longhorn.photos[0]}
@@ -34,11 +64,7 @@ export function LonghornCard({
               {longhorn.registration_number}
             </p>
           </div>
-          {longhorn.verification_status === "verified" ? (
-            <BadgeCheck className="mt-1 text-neutral-950" size={18} />
-          ) : (
-            <CircleDot className="mt-1 text-neutral-400" size={18} />
-          )}
+          <VerificationBadge status={longhorn.verification_status} />
         </div>
         <dl className="grid grid-cols-2 gap-3 text-sm">
           <div>
@@ -50,6 +76,9 @@ export function LonghornCard({
             <dd>{longhorn.horn_measurement}</dd>
           </div>
         </dl>
+        <p className="line-clamp-2 border-t border-neutral-200 pt-4 text-sm leading-6 text-neutral-600">
+          {longhorn.description}
+        </p>
       </div>
     </Link>
   );

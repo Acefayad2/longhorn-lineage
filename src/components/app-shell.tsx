@@ -1,8 +1,9 @@
 import Link from "next/link";
-import { BadgeCheck, Menu, Search } from "lucide-react";
+import { BadgeCheck, Search } from "lucide-react";
 import { signOut } from "@/lib/actions";
+import { MobileNav, type NavItem } from "./mobile-nav";
 
-const navItems = [
+const navItems: NavItem[] = [
   { href: "/dashboard", label: "Dashboard" },
   { href: "/longhorns", label: "Longhorns" },
   { href: "/lineage", label: "Lineage" },
@@ -59,9 +60,7 @@ export function AppShell({
                 Sign in
               </Link>
             )}
-            <button className="icon-button lg:hidden" aria-label="Open menu">
-              <Menu size={18} />
-            </button>
+            <MobileNav items={navItems} />
           </div>
         </div>
       </header>

@@ -71,14 +71,50 @@ export default async function LonghornDirectoryPage({
         </form>
       </section>
 
-      <section className="section grid gap-5 md:grid-cols-2 lg:grid-cols-3">
-        {results.map((longhorn) => (
-          <LonghornCard
-            key={longhorn.id}
-            longhorn={longhorn}
-            ranch={getRanch(longhorn.ranch_id)}
-          />
-        ))}
+      <section className="section-tight">
+        <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+          <p className="text-sm text-neutral-600">
+            Showing <span className="font-semibold text-neutral-950">{results.length}</span>{" "}
+            records
+            {params.q ? (
+              <>
+                {" "}
+                for <span className="font-semibold text-neutral-950">{params.q}</span>
+              </>
+            ) : null}
+          </p>
+          {(params.q || params.sex || params.status) ? (
+            <Link href="/longhorns" className="button-secondary">
+              Clear filters
+            </Link>
+          ) : null}
+        </div>
+      </section>
+
+      <section className="section grid gap-5 pt-4 md:grid-cols-2 lg:grid-cols-3">
+        {results.length ? (
+          results.map((longhorn) => (
+            <LonghornCard
+              key={longhorn.id}
+              longhorn={longhorn}
+              ranch={getRanch(longhorn.ranch_id)}
+            />
+          ))
+        ) : (
+          <div className="card p-8 md:col-span-2 lg:col-span-3">
+            <p className="label">No matches</p>
+            <h2 className="mt-2 text-2xl font-semibold">
+              No longhorns match those filters.
+            </h2>
+            <p className="mt-2 max-w-xl text-sm leading-6 text-neutral-600">
+              Try a ranch name, registration number, owner, sire, or dam from
+              the sample registry.
+            </p>
+            <Link href="/longhorns" className="button-primary mt-5">
+              Reset directory
+            </Link>
+          </div>
+        )}
       </section>
     </AppShell>
   );
