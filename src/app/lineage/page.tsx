@@ -23,7 +23,7 @@ export default async function LineagePage({
             <h1 className="mt-3 max-w-4xl text-4xl font-semibold tracking-tight sm:text-5xl">
               A visual pedigree wheel built for fast ranch decisions.
             </h1>
-            <p className="mt-4 max-w-2xl text-base leading-7 text-neutral-700">
+            <p className="mt-4 max-w-2xl text-base leading-7 text-[#496755]">
               Rotate focus between ancestors and offspring, then use the simple
               table below when you need the exact registration trail.
             </p>
@@ -66,7 +66,7 @@ export default async function LineagePage({
               offspring.map((calf) => (
                 <Link
                   href={`/lineage?id=${calf.id}`}
-                  className="flex items-center justify-between border-t border-neutral-200 pt-3 text-sm font-semibold hover:underline"
+                  className="flex items-center justify-between border-t border-[#cfe4c7] pt-3 text-sm font-semibold hover:underline"
                   key={calf.id}
                 >
                   {calf.name}
@@ -74,7 +74,7 @@ export default async function LineagePage({
                 </Link>
               ))
             ) : (
-              <p className="border-t border-neutral-200 pt-3 text-sm leading-6 text-neutral-600">
+              <p className="border-t border-[#cfe4c7] pt-3 text-sm leading-6 text-[#496755]">
                 No offspring records yet. Add calves from the longhorn form and
                 they will appear here.
               </p>

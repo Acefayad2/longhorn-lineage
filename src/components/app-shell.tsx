@@ -20,19 +20,19 @@ export function AppShell({
   signedIn?: boolean;
 }) {
   return (
-    <div className="min-h-screen bg-neutral-50 text-neutral-950">
-      <header className="sticky top-0 z-30 border-b border-neutral-200 bg-white/95 backdrop-blur">
+    <div className="min-h-screen bg-[#f3f8ef] text-[#173322]">
+      <header className="sticky top-0 z-30 border-b border-[#cfe4c7] bg-[#fffdf6]/95 backdrop-blur">
         <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-4 sm:px-6 lg:px-8">
           <Link href="/" className="flex items-center gap-3">
-            <span className="grid size-9 place-items-center rounded bg-neutral-950 text-sm font-black text-white">
+            <span className="grid size-9 place-items-center rounded bg-[#00b246] text-sm font-black text-white shadow-sm">
               LL
             </span>
             <span>
-              <span className="block text-base font-semibold tracking-tight">
+              <span className="block text-base font-semibold tracking-tight text-[#173322]">
                 Longhorn Lineage
               </span>
-              <span className="hidden text-xs text-neutral-500 sm:block">
-                Records, ranches, pedigree
+              <span className="hidden text-xs text-[#5f7d69] sm:block">
+                Herd neighbors, records, pedigree
               </span>
             </span>
           </Link>

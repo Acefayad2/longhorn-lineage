@@ -25,13 +25,13 @@ export function MobileNav({ items }: { items: NavItem[] }) {
       </button>
 
       {open ? (
-        <div className="absolute inset-x-0 top-[73px] border-b border-neutral-200 bg-white px-4 py-3 shadow-sm sm:px-6">
+        <div className="absolute inset-x-0 top-[73px] border-b border-[#cfe4c7] bg-[#fffdf6] px-4 py-3 shadow-sm sm:px-6">
           <nav className="mx-auto grid max-w-7xl gap-1">
             {items.map((item) => (
               <Link
                 key={item.href}
                 href={item.href}
-                className="rounded px-3 py-3 text-sm font-semibold text-neutral-800 hover:bg-neutral-100"
+                className="rounded px-3 py-3 text-sm font-semibold text-[#173322] hover:bg-[#e5f4dc]"
                 onClick={() => setOpen(false)}
               >
                 {item.label}

@@ -57,7 +57,7 @@ export default function DashboardPage() {
             <h1 className="mt-3 text-4xl font-semibold tracking-tight">
               Everything that needs attention, in one place.
             </h1>
-            <p className="mt-3 max-w-2xl leading-7 text-neutral-700">
+            <p className="mt-3 max-w-2xl leading-7 text-[#496755]">
               Start with the work queue, jump into a record, or open the
               lineage wheel when pedigree is the question.
             </p>
@@ -99,12 +99,12 @@ export default function DashboardPage() {
                 <Link
                   href={item.href}
                   key={item.title}
-                  className="grid gap-3 rounded border border-neutral-200 bg-white p-4 transition hover:border-neutral-950 sm:grid-cols-[auto_1fr_auto]"
+                  className="grid gap-3 rounded border border-[#cfe4c7] bg-[#fffdf6] p-4 transition hover:border-[#087333] hover:bg-white sm:grid-cols-[auto_1fr_auto]"
                 >
                   <item.icon size={20} />
                   <span>
                     <span className="block font-semibold">{item.title}</span>
-                    <span className="mt-1 block text-sm leading-6 text-neutral-600">
+                    <span className="mt-1 block text-sm leading-6 text-[#496755]">
                       {item.text}
                     </span>
                   </span>
@@ -122,11 +122,11 @@ export default function DashboardPage() {
             <div className="mt-4 space-y-3">
               {events.slice(0, 2).map((event) => (
                 <div
-                  className="border-t border-neutral-200 pt-3 text-sm"
+                  className="border-t border-[#cfe4c7] pt-3 text-sm"
                   key={event.id}
                 >
                   <p className="font-semibold">{event.title}</p>
-                  <p className="mt-1 text-neutral-500">
+                  <p className="mt-1 text-[#5f7d69]">
                     {event.date} · {event.location}
                   </p>
                 </div>
@@ -137,19 +137,19 @@ export default function DashboardPage() {
 
         <div className="grid gap-6">
           <article className="panel overflow-hidden">
-            <div className="border-b border-neutral-200 p-5">
+            <div className="border-b border-[#cfe4c7] p-5">
               <h2 className="text-xl font-semibold">Ranch roster</h2>
             </div>
-            <div className="divide-y divide-neutral-200">
+            <div className="divide-y divide-[#cfe4c7]">
               {ranches.map((ranch) => (
                 <Link
                   href={`/ranches/${ranch.slug}`}
                   key={ranch.id}
-                  className="flex items-center justify-between gap-4 p-5 hover:bg-white"
+                  className="flex items-center justify-between gap-4 p-5 hover:bg-[#fffdf6]"
                 >
                   <div>
                     <h3 className="font-semibold">{ranch.name}</h3>
-                    <p className="mt-1 text-sm text-neutral-500">
+                    <p className="mt-1 text-sm text-[#5f7d69]">
                       {ranch.location} · {ranch.owner_name}
                     </p>
                   </div>
@@ -175,14 +175,14 @@ export default function DashboardPage() {
                 return (
                   <Link
                     href={`/longhorns/${longhorn.id}`}
-                    className="rounded border border-neutral-200 bg-white p-4 hover:border-neutral-950"
+                    className="rounded border border-[#cfe4c7] bg-[#fffdf6] p-4 hover:border-[#087333]"
                     key={longhorn.id}
                   >
                     <p className="font-semibold">{longhorn.name}</p>
-                    <p className="mt-1 text-xs text-neutral-500">
+                    <p className="mt-1 text-xs text-[#5f7d69]">
                       {longhorn.registration_number}
                     </p>
-                    <p className="mt-3 text-sm text-neutral-600">
+                    <p className="mt-3 text-sm text-[#496755]">
                       {sire?.name ?? "Unknown sire"} /{" "}
                       {dam?.name ?? "Unknown dam"}
                     </p>
@@ -199,9 +199,9 @@ export default function DashboardPage() {
             </div>
             <div className="mt-4 space-y-3">
               {verificationRequests.map((request) => (
-                <div key={request.id} className="border-t border-neutral-200 pt-3">
+                <div key={request.id} className="border-t border-[#cfe4c7] pt-3">
                   <p className="font-medium">{request.target_name}</p>
-                  <p className="mt-1 text-sm text-neutral-500">
+                  <p className="mt-1 text-sm text-[#5f7d69]">
                     {request.notes}
                   </p>
                 </div>

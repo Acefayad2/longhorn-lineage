@@ -13,7 +13,7 @@ function PedigreeNode({
 }) {
   if (!longhorn || depth === 0) {
     return (
-      <div className="tree-node border-dashed text-neutral-400">
+      <div className="tree-node border-dashed text-[#7d967f]">
         <span className="label">{label}</span>
         <span>Unknown</span>
       </div>
@@ -28,12 +28,12 @@ function PedigreeNode({
       <Link href={`/longhorns/${longhorn.id}`} className="tree-node">
         <span className="label">{label}</span>
         <span className="font-semibold">{longhorn.name}</span>
-        <span className="text-xs text-neutral-500">
+        <span className="text-xs text-[#5f7d69]">
           {longhorn.registration_number}
         </span>
       </Link>
       {depth > 1 ? (
-        <div className="grid gap-3 border-l border-neutral-200 pl-3">
+        <div className="grid gap-3 border-l border-[#cfe4c7] pl-3">
           <PedigreeNode longhorn={sire} label="Sire" depth={depth - 1} />
           <PedigreeNode longhorn={dam} label="Dam" depth={depth - 1} />
         </div>
@@ -48,12 +48,12 @@ export function PedigreeTree({ longhorn }: { longhorn: Longhorn }) {
 
   return (
     <div className="grid gap-4 lg:grid-cols-[1fr_2fr]">
-      <div className="tree-node bg-neutral-950 text-white">
-        <span className="text-xs uppercase tracking-[0.22em] text-neutral-300">
+      <div className="tree-node bg-[#07351b] text-white">
+        <span className="text-xs uppercase tracking-[0.22em] text-[#cde8c3]">
           Subject
         </span>
         <span className="text-xl font-semibold">{longhorn.name}</span>
-        <span className="text-sm text-neutral-300">
+        <span className="text-sm text-[#dff4d7]">
           {longhorn.registration_number}
         </span>
       </div>

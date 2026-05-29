@@ -29,14 +29,14 @@ export default async function LonghornProfilePage({
   return (
     <AppShell>
       <section className="section grid gap-8 lg:grid-cols-[0.9fr_1.1fr]">
-        <div className="relative min-h-[440px] overflow-hidden border border-neutral-200 bg-neutral-100">
+        <div className="relative min-h-[440px] overflow-hidden border border-[#cfe4c7] bg-[#e5f4dc]">
           <Image
             src={longhorn.photos[0]}
             alt={longhorn.name}
             fill
             priority
             sizes="(min-width: 1024px) 45vw, 100vw"
-            className="object-cover grayscale"
+            className="object-cover saturate-[0.9]"
           />
         </div>
 
@@ -47,7 +47,7 @@ export default async function LonghornProfilePage({
               <h1 className="mt-2 text-4xl font-semibold tracking-tight">
                 {longhorn.name}
               </h1>
-              <p className="mt-3 leading-7 text-neutral-600">
+              <p className="mt-3 leading-7 text-[#496755]">
                 {longhorn.description}
               </p>
             </div>
@@ -109,7 +109,7 @@ export default async function LonghornProfilePage({
           <div className="mt-4 space-y-3">
             {longhorn.documents.map((document) => (
               <div
-                className="flex items-center gap-3 border-t border-neutral-200 pt-3"
+                className="flex items-center gap-3 border-t border-[#cfe4c7] pt-3"
                 key={document}
               >
                 <FileText size={18} />
@@ -124,14 +124,14 @@ export default async function LonghornProfilePage({
               offspring.map((calf) => (
                 <Link
                   href={`/longhorns/${calf.id}`}
-                  className="block border-t border-neutral-200 pt-3 text-sm font-medium hover:underline"
+                  className="block border-t border-[#cfe4c7] pt-3 text-sm font-medium hover:underline"
                   key={calf.id}
                 >
                   {calf.name}
                 </Link>
               ))
             ) : (
-              <p className="text-sm text-neutral-500">
+              <p className="text-sm text-[#5f7d69]">
                 No offspring records in the sample dataset.
               </p>
             )}

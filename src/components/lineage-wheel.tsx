@@ -30,7 +30,7 @@ function OrbitCard({ node }: { node: OrbitNode }) {
 
   if (!node.longhorn) {
     return (
-      <div className="orbit-node border-dashed text-neutral-400" style={position}>
+      <div className="orbit-node border-dashed text-[#7d967f]" style={position}>
         <span className="label block text-[10px]">{node.label}</span>
         <span className="mt-1 block text-sm font-semibold">Unknown</span>
       </div>
@@ -47,7 +47,7 @@ function OrbitCard({ node }: { node: OrbitNode }) {
       <span className="mt-1 block truncate text-sm font-semibold">
         {node.longhorn.name}
       </span>
-      <span className="mt-1 block truncate text-xs text-neutral-500">
+      <span className="mt-1 block truncate text-xs text-[#5f7d69]">
         {node.longhorn.registration_number}
       </span>
     </Link>
@@ -56,7 +56,7 @@ function OrbitCard({ node }: { node: OrbitNode }) {
 
 function StatPill({ label, value }: { label: string; value: string }) {
   return (
-    <div className="rounded border border-neutral-200 bg-white px-3 py-2">
+    <div className="rounded border border-[#cfe4c7] bg-[#fffdf6] px-3 py-2">
       <p className="label text-[10px]">{label}</p>
       <p className="mt-1 text-sm font-semibold">{value}</p>
     </div>
@@ -93,7 +93,7 @@ export function LineageWheel({ selectedId }: { selectedId: string }) {
     <div className="grid gap-6 xl:grid-cols-[360px_1fr]">
       <aside className="panel h-fit p-5">
         <div className="flex items-center gap-3">
-          <span className="grid size-10 place-items-center rounded bg-neutral-950 text-white">
+          <span className="grid size-10 place-items-center rounded bg-[#00b246] text-white">
             <GitBranch size={19} />
           </span>
           <div>
@@ -129,12 +129,12 @@ export function LineageWheel({ selectedId }: { selectedId: string }) {
           <StatPill label="Status" value={selected.verification_status} />
         </div>
 
-        <div className="mt-5 rounded bg-neutral-950 p-4 text-white">
+        <div className="mt-5 rounded bg-[#07351b] p-4 text-white">
           <p className="flex items-center gap-2 text-sm font-semibold">
             <Sparkles size={16} />
             Easy read
           </p>
-          <p className="mt-2 text-sm leading-6 text-neutral-300">
+          <p className="mt-2 text-sm leading-6 text-[#dff4d7]">
             Parents sit on the inner orbit, grandparents sit outside, and the
             bottom point shows the first offspring record when one exists.
           </p>
@@ -161,15 +161,15 @@ export function LineageWheel({ selectedId }: { selectedId: string }) {
       </aside>
 
       <section className="panel overflow-hidden p-4 sm:p-6">
-        <div className="lineage-wheel relative mx-auto aspect-square max-w-3xl rounded-full border border-neutral-300">
-          <div className="absolute left-1/2 top-1/2 z-10 w-40 -translate-x-1/2 -translate-y-1/2 rounded border border-neutral-950 bg-neutral-950 p-4 text-center text-white shadow-xl sm:w-52">
-            <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-neutral-300">
+        <div className="lineage-wheel relative mx-auto aspect-square max-w-3xl rounded-full border border-[#b9d8af] bg-[#fffaf0]">
+          <div className="absolute left-1/2 top-1/2 z-10 w-40 -translate-x-1/2 -translate-y-1/2 rounded border border-[#07351b] bg-[#07351b] p-4 text-center text-white shadow-xl sm:w-52">
+            <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-[#cde8c3]">
               Subject
             </p>
             <h3 className="mt-2 text-lg font-semibold sm:text-2xl">
               {selected.name}
             </h3>
-            <p className="mt-2 text-xs text-neutral-300">
+            <p className="mt-2 text-xs text-[#dff4d7]">
               {selected.registration_number}
             </p>
           </div>

@@ -15,7 +15,7 @@ function VerificationBadge({ status }: { status: Longhorn["verification_status"]
 
   if (status === "pending") {
     return (
-      <span className="status border border-neutral-300 bg-white text-neutral-700">
+      <span className="status border border-[#dfc49d] bg-[#fff6de] text-[#82511f]">
         <Clock3 size={14} />
         Pending
       </span>
@@ -40,17 +40,17 @@ export function LonghornCard({
   return (
     <Link
       href={`/longhorns/${longhorn.id}`}
-      className="group card overflow-hidden transition hover:-translate-y-0.5 hover:shadow-md"
+      className="group card overflow-hidden transition hover:-translate-y-0.5 hover:border-[#087333] hover:shadow-md"
     >
-      <div className="relative aspect-[4/3] bg-neutral-100">
+      <div className="relative aspect-[4/3] bg-[#e5f4dc]">
         <Image
           src={longhorn.photos[0]}
           alt={longhorn.name}
           fill
           sizes="(min-width: 1024px) 33vw, 100vw"
-          className="object-cover grayscale transition duration-300 group-hover:scale-[1.03] group-hover:grayscale-0"
+          className="object-cover saturate-[0.85] transition duration-300 group-hover:scale-[1.03] group-hover:saturate-100"
         />
-        <span className="absolute left-3 top-3 rounded bg-white px-2 py-1 text-xs font-medium">
+        <span className="absolute left-3 top-3 rounded bg-[#fffdf6] px-2 py-1 text-xs font-medium text-[#173322]">
           {longhorn.sex}
         </span>
       </div>
@@ -60,7 +60,7 @@ export function LonghornCard({
             <h3 className="text-lg font-semibold tracking-tight">
               {longhorn.name}
             </h3>
-            <p className="text-sm text-neutral-500">
+            <p className="text-sm text-[#5f7d69]">
               {longhorn.registration_number}
             </p>
           </div>
@@ -76,7 +76,7 @@ export function LonghornCard({
             <dd>{longhorn.horn_measurement}</dd>
           </div>
         </dl>
-        <p className="line-clamp-2 border-t border-neutral-200 pt-4 text-sm leading-6 text-neutral-600">
+        <p className="line-clamp-2 border-t border-[#cfe4c7] pt-4 text-sm leading-6 text-[#496755]">
           {longhorn.description}
         </p>
       </div>
