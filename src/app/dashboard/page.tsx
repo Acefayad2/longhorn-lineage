@@ -1,32 +1,75 @@
 import Link from "next/link";
-import { CalendarDays, CircleDollarSign, ShieldCheck } from "lucide-react";
+import {
+  ArrowRight,
+  CalendarDays,
+  CircleDollarSign,
+  ClipboardCheck,
+  FileText,
+  GitBranch,
+  ShieldCheck,
+} from "lucide-react";
 import { AppShell, VerifiedMark } from "@/components/app-shell";
 import {
   events,
+  getLonghorn,
   longhorns,
   marketplaceListings,
   ranches,
   verificationRequests,
 } from "@/lib/sample-data";
 
+const workflow = [
+  {
+    title: "Confirm Rio Pearl transfer",
+    text: "Owner transfer receipt is uploaded and waiting on registry review.",
+    href: "/admin",
+    icon: ShieldCheck,
+  },
+  {
+    title: "Attach calf papers",
+    text: "Llano Silverline has an application but needs the final certificate.",
+    href: "/longhorns/lh-4",
+    icon: FileText,
+  },
+  {
+    title: "Review sale prospect",
+    text: "Marketplace listing is available and tied to the lineage wheel.",
+    href: "/marketplace",
+    icon: CircleDollarSign,
+  },
+];
+
 export default function DashboardPage() {
   const verifiedCount = longhorns.filter(
     (longhorn) => longhorn.verification_status === "verified",
   ).length;
+  const openListings = marketplaceListings.filter(
+    (listing) => listing.status !== "sold",
+  );
+  const newest = [...longhorns].slice(0, 4);
 
   return (
     <AppShell>
-      <section className="section-tight">
-        <div className="flex flex-col justify-between gap-4 border-b border-neutral-200 pb-6 sm:flex-row sm:items-end">
+      <section className="soft-band">
+        <div className="section grid gap-6 lg:grid-cols-[1fr_auto] lg:items-end">
           <div>
-            <p className="label">Ranch operations</p>
-            <h1 className="mt-2 text-3xl font-semibold tracking-tight">
-              Dashboard
+            <p className="label">Ranch command center</p>
+            <h1 className="mt-3 text-4xl font-semibold tracking-tight">
+              Everything that needs attention, in one place.
             </h1>
+            <p className="mt-3 max-w-2xl leading-7 text-neutral-700">
+              Start with the work queue, jump into a record, or open the
+              lineage wheel when pedigree is the question.
+            </p>
           </div>
-          <Link href="/longhorns/new" className="button-primary">
-            Add longhorn
-          </Link>
+          <div className="flex flex-col gap-3 sm:flex-row">
+            <Link href="/longhorns/new" className="button-primary">
+              Add longhorn
+            </Link>
+            <Link href="/lineage?id=lh-4" className="button-secondary">
+              Open lineage wheel
+            </Link>
+          </div>
         </div>
       </section>
 
@@ -35,48 +78,128 @@ export default function DashboardPage() {
           ["Longhorn records", longhorns.length],
           ["Verified cattle", verifiedCount],
           ["Ranch profiles", ranches.length],
-          ["Open listings", marketplaceListings.length],
+          ["Active listings", openListings.length],
         ].map(([label, value]) => (
-          <article className="card p-5" key={label}>
+          <article className="panel p-5" key={label}>
             <p className="label">{label}</p>
             <p className="mt-3 text-3xl font-semibold">{value}</p>
           </article>
         ))}
       </section>
 
-      <section className="section grid gap-6 lg:grid-cols-[1.1fr_0.9fr]">
-        <div className="card">
-          <div className="border-b border-neutral-200 p-5">
-            <h2 className="text-xl font-semibold">Ranch roster</h2>
-          </div>
-          <div className="divide-y divide-neutral-200">
-            {ranches.map((ranch) => (
-              <Link
-                href={`/ranches/${ranch.slug}`}
-                key={ranch.id}
-                className="flex items-center justify-between gap-4 p-5 hover:bg-neutral-50"
-              >
-                <div>
-                  <h3 className="font-semibold">{ranch.name}</h3>
-                  <p className="mt-1 text-sm text-neutral-500">
-                    {ranch.location} · {ranch.owner_name}
+      <section className="section grid gap-6 pt-0 xl:grid-cols-[0.9fr_1.1fr]">
+        <div className="grid gap-6">
+          <article className="panel p-5">
+            <div className="flex items-center gap-3">
+              <ClipboardCheck size={20} />
+              <h2 className="text-xl font-semibold">Today&apos;s work queue</h2>
+            </div>
+            <div className="mt-5 grid gap-3">
+              {workflow.map((item) => (
+                <Link
+                  href={item.href}
+                  key={item.title}
+                  className="grid gap-3 rounded border border-neutral-200 bg-white p-4 transition hover:border-neutral-950 sm:grid-cols-[auto_1fr_auto]"
+                >
+                  <item.icon size={20} />
+                  <span>
+                    <span className="block font-semibold">{item.title}</span>
+                    <span className="mt-1 block text-sm leading-6 text-neutral-600">
+                      {item.text}
+                    </span>
+                  </span>
+                  <ArrowRight size={16} />
+                </Link>
+              ))}
+            </div>
+          </article>
+
+          <article className="panel p-5">
+            <div className="flex items-center gap-3">
+              <CalendarDays size={20} />
+              <h2 className="text-xl font-semibold">Calendar and auctions</h2>
+            </div>
+            <div className="mt-4 space-y-3">
+              {events.slice(0, 2).map((event) => (
+                <div
+                  className="border-t border-neutral-200 pt-3 text-sm"
+                  key={event.id}
+                >
+                  <p className="font-semibold">{event.title}</p>
+                  <p className="mt-1 text-neutral-500">
+                    {event.date} · {event.location}
                   </p>
                 </div>
-                <VerifiedMark verified={ranch.verified} />
-              </Link>
-            ))}
-          </div>
+              ))}
+            </div>
+          </article>
         </div>
 
         <div className="grid gap-6">
-          <article className="card p-5">
+          <article className="panel overflow-hidden">
+            <div className="border-b border-neutral-200 p-5">
+              <h2 className="text-xl font-semibold">Ranch roster</h2>
+            </div>
+            <div className="divide-y divide-neutral-200">
+              {ranches.map((ranch) => (
+                <Link
+                  href={`/ranches/${ranch.slug}`}
+                  key={ranch.id}
+                  className="flex items-center justify-between gap-4 p-5 hover:bg-white"
+                >
+                  <div>
+                    <h3 className="font-semibold">{ranch.name}</h3>
+                    <p className="mt-1 text-sm text-neutral-500">
+                      {ranch.location} · {ranch.owner_name}
+                    </p>
+                  </div>
+                  <VerifiedMark verified={ranch.verified} />
+                </Link>
+              ))}
+            </div>
+          </article>
+
+          <article className="panel p-5">
+            <div className="flex items-center gap-3">
+              <GitBranch size={20} />
+              <h2 className="text-xl font-semibold">Recently viewed herd</h2>
+            </div>
+            <div className="mt-5 grid gap-3 sm:grid-cols-2">
+              {newest.map((longhorn) => {
+                const sire = longhorn.sire_id
+                  ? getLonghorn(longhorn.sire_id)
+                  : undefined;
+                const dam = longhorn.dam_id
+                  ? getLonghorn(longhorn.dam_id)
+                  : undefined;
+                return (
+                  <Link
+                    href={`/longhorns/${longhorn.id}`}
+                    className="rounded border border-neutral-200 bg-white p-4 hover:border-neutral-950"
+                    key={longhorn.id}
+                  >
+                    <p className="font-semibold">{longhorn.name}</p>
+                    <p className="mt-1 text-xs text-neutral-500">
+                      {longhorn.registration_number}
+                    </p>
+                    <p className="mt-3 text-sm text-neutral-600">
+                      {sire?.name ?? "Unknown sire"} /{" "}
+                      {dam?.name ?? "Unknown dam"}
+                    </p>
+                  </Link>
+                );
+              })}
+            </div>
+          </article>
+
+          <article className="panel p-5">
             <div className="flex items-center gap-3">
               <ShieldCheck size={20} />
-              <h2 className="text-xl font-semibold">Pending verification</h2>
+              <h2 className="text-xl font-semibold">Verification requests</h2>
             </div>
-            <div className="mt-5 space-y-4">
+            <div className="mt-4 space-y-3">
               {verificationRequests.map((request) => (
-                <div key={request.id} className="border-t border-neutral-200 pt-4">
+                <div key={request.id} className="border-t border-neutral-200 pt-3">
                   <p className="font-medium">{request.target_name}</p>
                   <p className="mt-1 text-sm text-neutral-500">
                     {request.notes}
@@ -84,28 +207,6 @@ export default function DashboardPage() {
                 </div>
               ))}
             </div>
-          </article>
-
-          <article className="card p-5">
-            <div className="flex items-center gap-3">
-              <CalendarDays size={20} />
-              <h2 className="text-xl font-semibold">Next event</h2>
-            </div>
-            <p className="mt-4 font-medium">{events[0].title}</p>
-            <p className="mt-1 text-sm text-neutral-500">
-              {events[0].date} · {events[0].location}
-            </p>
-          </article>
-
-          <article className="card p-5">
-            <div className="flex items-center gap-3">
-              <CircleDollarSign size={20} />
-              <h2 className="text-xl font-semibold">Marketplace pulse</h2>
-            </div>
-            <p className="mt-4 text-sm text-neutral-600">
-              {marketplaceListings.length} listings are staged with status,
-              seller, location, and cattle profile links.
-            </p>
           </article>
         </div>
       </section>
