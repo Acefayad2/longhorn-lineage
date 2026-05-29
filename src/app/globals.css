@@ -99,19 +99,40 @@ textarea {
   @apply block rounded border border-[#cfe4c7] bg-white p-4 text-sm shadow-sm;
 }
 
-.lineage-wheel {
+.family-map {
   background:
-    radial-gradient(circle at center, rgba(255,250,240,0.98) 0 18%, transparent 18.5%),
-    repeating-radial-gradient(circle at center, transparent 0 78px, rgba(8,115,51,0.18) 79px, transparent 80px),
-    conic-gradient(from 30deg, rgba(0,178,70,0.14), transparent 22%, rgba(185,106,58,0.16), transparent 54%, rgba(8,115,51,0.14));
+    linear-gradient(rgba(8, 115, 51, 0.07) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(8, 115, 51, 0.07) 1px, transparent 1px),
+    linear-gradient(135deg, #f8fff3 0%, #fffaf0 48%, #e5f4dc 100%);
+  background-size: 34px 34px, 34px 34px, auto;
 }
 
 .orbit-node {
-  @apply absolute w-32 -translate-x-1/2 -translate-y-1/2 rounded border border-[#b9d8af] bg-white p-3 text-left shadow-md transition hover:-translate-y-[calc(50%+2px)] hover:border-[#087333];
+  @apply absolute w-44 rounded-[18px] border border-[#b9d8af] bg-white/95 p-3 text-left shadow-lg shadow-[#173322]/10 backdrop-blur transition;
+  transform: translate(-50%, -50%);
+}
+
+.orbit-node:hover {
+  border-color: #087333;
+  box-shadow: 0 18px 45px rgba(23, 51, 34, 0.18);
+  transform: translate(-50%, calc(-50% - 4px));
+}
+
+.orbit-node-inner {
+  @apply flex items-center gap-3;
+}
+
+.orbit-node-photo {
+  @apply relative size-12 shrink-0 overflow-hidden rounded-full border border-[#cfe4c7] bg-[#e5f4dc];
+}
+
+.lineage-center-card {
+  @apply absolute left-1/2 top-1/2 z-10 w-56 rounded-[22px] border border-[#07351b] bg-[#07351b] p-4 text-center text-white shadow-2xl shadow-[#07351b]/25;
+  transform: translate(-50%, -50%);
 }
 
 @media (max-width: 640px) {
   .orbit-node {
-    @apply w-24 p-2;
+    @apply w-40 p-2;
   }
 }

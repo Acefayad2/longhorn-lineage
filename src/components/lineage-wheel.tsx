@@ -1,7 +1,8 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
-import { GitBranch, RotateCcw, Sparkles } from "lucide-react";
+import { ArrowUpRight, GitBranch, RotateCcw, Sparkles } from "lucide-react";
 import {
   getLonghorn,
   getOffspring,
@@ -13,24 +14,26 @@ import type { Longhorn } from "@/lib/types";
 type OrbitNode = {
   label: string;
   longhorn?: Longhorn;
-  angle: number;
-  radius: number;
+  x: number;
+  y: number;
+  tone: "parent" | "grandparent" | "offspring";
 };
 
-function point(angle: number, radius: number) {
-  const radians = (angle - 90) * (Math.PI / 180);
-  return {
-    left: `${50 + Math.cos(radians) * radius}%`,
-    top: `${50 + Math.sin(radians) * radius}%`,
-  };
-}
-
 function OrbitCard({ node }: { node: OrbitNode }) {
-  const position = point(node.angle, node.radius);
+  const position = { left: `${node.x}%`, top: `${node.y}%` };
+  const tone =
+    node.tone === "parent"
+      ? "border-[#00b246]"
+      : node.tone === "offspring"
+        ? "border-[#b96a3a]"
+        : "border-[#b9d8af]";
 
   if (!node.longhorn) {
     return (
-      <div className="orbit-node border-dashed text-[#7d967f]" style={position}>
+      <div
+        className={`orbit-node border-dashed ${tone} text-[#7d967f]`}
+        style={position}
+      >
         <span className="label block text-[10px]">{node.label}</span>
         <span className="mt-1 block text-sm font-semibold">Unknown</span>
       </div>
@@ -40,15 +43,32 @@ function OrbitCard({ node }: { node: OrbitNode }) {
   return (
     <Link
       href={`/lineage?id=${node.longhorn.id}`}
-      className="orbit-node"
+      className={`orbit-node ${tone}`}
       style={position}
     >
-      <span className="label block text-[10px]">{node.label}</span>
-      <span className="mt-1 block truncate text-sm font-semibold">
-        {node.longhorn.name}
-      </span>
-      <span className="mt-1 block truncate text-xs text-[#5f7d69]">
-        {node.longhorn.registration_number}
+      <div className="orbit-node-inner">
+        <span className="orbit-node-photo">
+          <Image
+            src={node.longhorn.photos[0]}
+            alt={node.longhorn.name}
+            fill
+            sizes="48px"
+            className="object-cover saturate-[0.9]"
+          />
+        </span>
+        <span className="min-w-0">
+          <span className="label block text-[10px]">{node.label}</span>
+          <span className="mt-1 block truncate text-sm font-semibold">
+            {node.longhorn.name}
+          </span>
+          <span className="mt-1 block truncate text-xs text-[#5f7d69]">
+            {node.longhorn.registration_number}
+          </span>
+        </span>
+      </div>
+      <span className="mt-3 inline-flex items-center gap-1 text-xs font-semibold text-[#087333]">
+        Focus
+        <ArrowUpRight size={12} />
       </span>
     </Link>
   );
@@ -75,18 +95,13 @@ export function LineageWheel({ selectedId }: { selectedId: string }) {
   const ranch = getRanch(selected.ranch_id);
 
   const orbitNodes: OrbitNode[] = [
-    { label: "Sire", longhorn: sire, angle: 300, radius: 25 },
-    { label: "Dam", longhorn: dam, angle: 60, radius: 25 },
-    { label: "Sire's sire", longhorn: sireSire, angle: 245, radius: 40 },
-    { label: "Sire's dam", longhorn: sireDam, angle: 335, radius: 40 },
-    { label: "Dam's sire", longhorn: damSire, angle: 25, radius: 40 },
-    { label: "Dam's dam", longhorn: damDam, angle: 115, radius: 40 },
-    {
-      label: "Offspring",
-      longhorn: offspring[0],
-      angle: 180,
-      radius: 39,
-    },
+    { label: "Sire", longhorn: sire, x: 31, y: 42, tone: "parent" },
+    { label: "Dam", longhorn: dam, x: 69, y: 42, tone: "parent" },
+    { label: "Sire's sire", longhorn: sireSire, x: 18, y: 18, tone: "grandparent" },
+    { label: "Sire's dam", longhorn: sireDam, x: 18, y: 72, tone: "grandparent" },
+    { label: "Dam's sire", longhorn: damSire, x: 82, y: 18, tone: "grandparent" },
+    { label: "Dam's dam", longhorn: damDam, x: 82, y: 72, tone: "grandparent" },
+    { label: "Offspring", longhorn: offspring[0], x: 50, y: 86, tone: "offspring" },
   ];
 
   return (
@@ -160,15 +175,24 @@ export function LineageWheel({ selectedId }: { selectedId: string }) {
         </div>
       </aside>
 
-      <section className="panel overflow-hidden p-4 sm:p-6">
-        <div className="lineage-wheel relative mx-auto aspect-square max-w-3xl rounded-full border border-[#b9d8af] bg-[#fffaf0]">
-          <div className="absolute left-1/2 top-1/2 z-10 w-40 -translate-x-1/2 -translate-y-1/2 rounded border border-[#07351b] bg-[#07351b] p-4 text-center text-white shadow-xl sm:w-52">
+      <section className="panel overflow-hidden p-3 sm:p-5">
+        <div className="overflow-x-auto pb-2">
+          <div className="family-map relative mx-auto h-[640px] w-[860px] overflow-hidden rounded-[30px] border border-[#b9d8af]">
+          <div className="lineage-center-card">
+            <div className="relative mx-auto mb-3 size-20 overflow-hidden rounded-full border-2 border-[#dff4d7] bg-[#e5f4dc]">
+              <Image
+                src={selected.photos[0]}
+                alt={selected.name}
+                fill
+                priority
+                sizes="80px"
+                className="object-cover saturate-[0.95]"
+              />
+            </div>
             <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-[#cde8c3]">
-              Subject
+              Current focus
             </p>
-            <h3 className="mt-2 text-lg font-semibold sm:text-2xl">
-              {selected.name}
-            </h3>
+            <h3 className="mt-2 text-2xl font-semibold">{selected.name}</h3>
             <p className="mt-2 text-xs text-[#dff4d7]">
               {selected.registration_number}
             </p>
@@ -176,26 +200,68 @@ export function LineageWheel({ selectedId }: { selectedId: string }) {
           <svg
             className="absolute inset-0 h-full w-full"
             viewBox="0 0 100 100"
+            preserveAspectRatio="none"
             aria-hidden="true"
           >
             {orbitNodes.map((node) => {
-              const target = point(node.angle, node.radius);
               return (
-                <line
-                  key={`${node.label}-${node.angle}`}
-                  x1="50"
-                  y1="50"
-                  x2={target.left.replace("%", "")}
-                  y2={target.top.replace("%", "")}
-                  stroke="rgba(23,23,23,0.18)"
-                  strokeWidth="0.35"
+                <path
+                  key={`${node.label}-${node.x}-${node.y}`}
+                  d={`M 50 50 C 50 ${node.y}, ${node.x} 50, ${node.x} ${node.y}`}
+                  fill="none"
+                  stroke={
+                    node.tone === "offspring"
+                      ? "rgba(185,106,58,0.42)"
+                      : "rgba(8,115,51,0.3)"
+                  }
+                  strokeWidth="0.42"
+                  strokeLinecap="round"
                 />
               );
             })}
+            <path
+              d="M 18 18 C 24 24, 25 34, 31 42"
+              fill="none"
+              stroke="rgba(8,115,51,0.18)"
+              strokeWidth="0.3"
+            />
+            <path
+              d="M 18 72 C 24 66, 25 52, 31 42"
+              fill="none"
+              stroke="rgba(8,115,51,0.18)"
+              strokeWidth="0.3"
+            />
+            <path
+              d="M 82 18 C 76 24, 75 34, 69 42"
+              fill="none"
+              stroke="rgba(8,115,51,0.18)"
+              strokeWidth="0.3"
+            />
+            <path
+              d="M 82 72 C 76 66, 75 52, 69 42"
+              fill="none"
+              stroke="rgba(8,115,51,0.18)"
+              strokeWidth="0.3"
+            />
           </svg>
-          {orbitNodes.map((node) => (
-            <OrbitCard key={`${node.label}-${node.angle}`} node={node} />
+          {["Grandparents", "Parents", "Offspring"].map((label, index) => (
+            <span
+              key={label}
+              className="absolute left-5 rounded-full border border-[#cfe4c7] bg-white/80 px-3 py-1 text-xs font-semibold text-[#496755]"
+              style={{ top: `${18 + index * 27}%` }}
+            >
+              {label}
+            </span>
           ))}
+          {orbitNodes.map((node) => (
+            <OrbitCard key={`${node.label}-${node.x}-${node.y}`} node={node} />
+          ))}
+          </div>
+        </div>
+        <div className="mt-4 flex flex-wrap gap-2 text-xs font-semibold text-[#496755]">
+          <span className="rounded-full bg-[#dff4d7] px-3 py-1">Green: parents</span>
+          <span className="rounded-full bg-[#fff6de] px-3 py-1">Clay: offspring</span>
+          <span className="rounded-full bg-white px-3 py-1">Tap a card to refocus</span>
         </div>
       </section>
     </div>
